@@ -8,8 +8,7 @@ La version **Swing 1.1** fonctionne avec **Java 8**, **NetBeans 8.0.2** et **Ant
 
 ## Aperçu
 
-<img width="1083" height="712" alt="Capture d&#39;écran 2026-11-05 131713" src="https://github.com/user-attachments/assets/d5c09b82-8383-4ee9-9f52-083b37fe19dc" />
-
+<img width="883" height="757" alt="Capture d&#39;écran 2026-11-05 145254" src="https://github.com/user-attachments/assets/8e2fdb48-ac92-4539-8e49-f8ccab9b3e30" />
 
 ## Fonctionnalités
 
