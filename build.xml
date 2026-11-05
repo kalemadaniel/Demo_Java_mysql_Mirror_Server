@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Demo_Java_mysql_Mirror_Server" default="jar" basedir=".">
+  <property name="src.dir" location="src"/>
+  <property name="test.dir" location="test"/>
+  <property name="driver" location="lib/mysql-connector-j-9.7.0.jar"/>
+  <property name="build.dir" location="build"/>
+  <property name="dist.dir" location="dist"/>
+  <target name="init">
+    <available file="${driver}" property="driver.present"/>
+    <fail unless="driver.present">Le pilote MySQL est absent du dossier lib. Extrayez entièrement le ZIP.</fail>
+    <mkdir dir="${build.dir}/classes"/>
+  </target>
+  <target name="compile" depends="init">
+    <javac srcdir="${src.dir}" destdir="${build.dir}/classes" source="1.8" target="1.8" encoding="UTF-8" includeantruntime="false">
+      <classpath><pathelement location="${driver}"/></classpath>
+    </javac>
+  </target>
+  <target name="jar" depends="compile">
+    <mkdir dir="${dist.dir}/lib"/>
+    <copy file="${driver}" todir="${dist.dir}/lib"/>
+    <jar destfile="${dist.dir}/Demo_Java_mysql_Mirror_Server.jar" basedir="${build.dir}/classes">
+      <manifest><attribute name="Main-Class" value="mirror.App"/><attribute name="Class-Path" value="lib/mysql-connector-j-9.7.0.jar"/></manifest>
+    </jar>
+  </target>
+  <target name="run" depends="compile">
+    <java classname="mirror.App" fork="true" failonerror="true">
+      <classpath><pathelement location="${build.dir}/classes"/><pathelement location="${driver}"/></classpath>
+    </java>
+  </target>
+  <target name="test" depends="compile">
+    <mkdir dir="${build.dir}/test-classes"/>
+    <javac srcdir="${test.dir}" destdir="${build.dir}/test-classes" source="1.8" target="1.8" encoding="UTF-8" includeantruntime="false">
+      <classpath><pathelement location="${build.dir}/classes"/></classpath>
+    </javac>
+    <java classname="mirror.EngineTest" fork="true" failonerror="true"><classpath><pathelement location="${build.dir}/classes"/><pathelement location="${build.dir}/test-classes"/></classpath></java>
+    <java classname="mirror.UiTest" fork="true" failonerror="true"><classpath><pathelement location="${build.dir}/classes"/><pathelement location="${build.dir}/test-classes"/></classpath></java>
+  </target>
+  <target name="clean"><delete dir="${build.dir}"/><delete dir="${dist.dir}"/></target>
+  <target name="rebuild" depends="clean,jar"/>
+</project>
